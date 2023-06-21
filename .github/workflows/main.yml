@@ -20,13 +20,15 @@ jobs:
           python-versions: 3.8
           
       - name: Install python dependencies
-        run: cd FlaskApp
-        run: python -m pip install --upgrade pip
-        run: pip install -r requirements.txt
+        run: | 
+           cd FlaskApp
+           python -m pip install --upgrade pip
+           pip install -r requirements.txt
       
       - name: Build and test React frontend
-        run: cd ..
-        run: cd react-flask-app
-        run: npm install
-        run: npm run test
-        run: a
+        run: |
+           cd ..
+           cd react-flask-app
+           npm install
+           npm run test
+           a
