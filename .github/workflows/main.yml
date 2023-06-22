@@ -27,7 +27,6 @@ jobs:
       
       - name: Build and test React frontend
         run: |
-           cd ..
            cd react-flask-app
            npm install
            npm run test
