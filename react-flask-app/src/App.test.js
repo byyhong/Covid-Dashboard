@@ -33,7 +33,7 @@ test('Test text', async () => {
             <App />
         </ErrorBoundary>
    )
-    await fetch('http://localhost:5000/prediction/2023-01-04');
+    await fetch('http://localhost:5000/prediction/2023-01-03');
     expect(screen.getByText(/Predicted Death Cases Range:/i)).toBeInTheDocument();
     screen.debug(container, { maxDepth: 20 });
 });
@@ -46,6 +46,6 @@ test('Test date-picker', async () => {
    )
 
     await fetch('http://localhost:5000/prediction/2023-01-04');
-    expect(screen.getByRole('textbox')).toHaveValue('01/02/2023');
+    expect(screen.getByRole('textbox')).toHaveValue('01/03/2023');
 });
 
