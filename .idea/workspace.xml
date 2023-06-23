@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d0b691d-1dc5-4f05-9e35-71d7377718d9" name="Changes" comment="Added Requirement.txt">
-      <change beforePath="$PROJECT_DIR$/.idea/Covid-Dashboard.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Covid-Dashboard.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react-flask-app/src/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/react-flask-app/src/App.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
