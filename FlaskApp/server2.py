@@ -8,7 +8,6 @@ import pandas as pd
 import sys
 import os
 import statistics
-from keras.models import load_model
 import numpy as np
 from math import sqrt
 import numpy as np
@@ -34,7 +33,6 @@ from keras.models import load_model
 from dash.dependencies import Input, Output, State
 from datetime import date, timedelta, datetime
 import mysql.connector
-import test
 from flask import Flask
 from dateutil.parser import parse
 from datetime import date
@@ -84,7 +82,8 @@ for i in range(28, 208):
 # dataset = pd.read_csv("/var/www/FlaskApp/data/update_data.csv")
 
 #Local path
-dataset = pd.read_csv("./data/daily_covid_data.csv")
+print(os.getcwd())
+dataset = pd.read_csv("/data/daily_covid_data.csv")
 
 # df.set_index("test_date", inplace = True)
 dataset.set_index("test_date", inplace=True)
