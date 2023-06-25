@@ -184,16 +184,18 @@ def prediction(local_reframe, x_days_back):
 month_result, result = prediction(reframed_copy, 0)
 
 config = {
-    'host' : 'localhost',
-    'user' : 'root',
-    'database' : 'Covid_Dash',
-    'password' : 'Hlbj513851@',
+    'user': 'byhong',
+    'password': 'hlbj513851',
+    'host': 'covid-dashboard-database.cg1uotwl60q9.us-east-2.rds.amazonaws.com',
+    'port': 3306,
 }
 
 mydb = mysql.connector.connect(**config)
 my_cursor = mydb.cursor(buffered=True)
 my_cursor.execute("CREATE DATABASE if not exists Covid_Dash")
+
 my_cursor.execute("USE Covid_Dash")
+
 death_cases_table = """CREATE TABLE if not exists Death_Case(
                   date DATE,
                   death_cases DOUBLE
@@ -240,6 +242,7 @@ CORS(app)
 def prediction():
     mydb = mysql.connector.connect(**config)
     my_cursor = mydb.cursor(buffered=True)
+    my_cursor.execute("USE Covid_Dash")
     my_cursor.execute("SELECT * FROM Death_Case")
     all_data = my_cursor.fetchall()
     to_return = [list(row) for row in all_data]
@@ -252,9 +255,9 @@ def prediction():
 
 @app.route('/prediction/<string:date_param>', methods = ['GET'])
 def prediction_by_date(date_param):
-    print(date_param)
     mydb = mysql.connector.connect(**config)
     my_cursor = mydb.cursor(buffered=True)
+    my_cursor.execute("USE Covid_Dash")
     date_param = datetime.strptime(date_param, '%Y-%m-%d')
     my_cursor.execute("SELECT * FROM Death_Case WHERE date = \'{}\'".format(date_param))
     all_data = my_cursor.fetchall()
