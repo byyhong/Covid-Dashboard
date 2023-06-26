@@ -23,7 +23,6 @@ jobs:
           
       - name: Build and tag Docker image
         run: |
-          cd react-flask-app
           docker-compose build
           docker tag 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:${{ github.sha }}
           
