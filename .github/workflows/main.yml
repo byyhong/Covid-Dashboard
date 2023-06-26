@@ -7,26 +7,31 @@ on:
   workflow_dispatch:
   
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          python-version: 3.8
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
           
-      - name: Install python dependencies
-        run: | 
-           cd FlaskApp
-           python -m pip install --upgrade pip
-           pip install -r requirements.txt
-      
-      - name: Build and test React frontend
+      - name: Build and tag Docker image
         run: |
-           cd react-flask-app
-           npm install
-           npm run test
+          cd react-flask-app
+          docker-compose build
+          docker tag 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:${{ github.sha }}
+          
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash
+      
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:${{ github.sha }}
