@@ -23,7 +23,7 @@ jobs:
           
       - name: Build and tag Docker image
         run: |
-          docker-compose build
+          docker compose up
           docker tag 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:${{ github.sha }}
           
       - name: Login to Amazon ECR
