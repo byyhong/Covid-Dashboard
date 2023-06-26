@@ -7,31 +7,32 @@ on:
   workflow_dispatch:
   
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./react-flask-app
+          push: true
+          tags: <414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash>/frontend:${{ github.sha }}
+
+      - name: Build backend Docker image
+        run: docker build -t <414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash>/backend:${{ github.sha }} ./FlaskApp
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2
-          
-      - name: Build and tag Docker image
-        run: |
-          docker compose up
-          docker tag 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:${{ github.sha }}
-          
-      - name: Login to Amazon ECR
-        run: |
-          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash
-      
+          aws-region: <us-east-2>
 
-      - name: Push Docker image to Amazon ECR
-        run: |
-          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
-          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:${{ github.sha }}
+      - name: Login to AWS ECR
+        run: aws ecr get-login-password --region <us-east-2> | docker login --username AWS --password-stdin <414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash>
+
+      - name: Push backend Docker image to ECR
+        run: docker push <your-ecr-registry-uri>/backend:${{ github.sha }}
