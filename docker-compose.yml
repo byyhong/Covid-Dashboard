@@ -1,0 +1,10 @@
+version: ""
+services:
+  server:
+    build:
+      dockerfile: 'Dockerfile'
+      context: ./react-flask-app
+  client:
+    build:
+      dockerfile: 'Dockerfile'
+      context: ./FlaskApp
