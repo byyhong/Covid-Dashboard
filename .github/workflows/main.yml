@@ -20,21 +20,17 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
+      - name: Log in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and push frontend Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./react-flask-app
-          push: true
-          tags: 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash/frontend:${{ github.sha }}
-
-      - name: Build backend Docker image
-        run: docker build -t 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash/backend:${{ github.sha }} ./FlaskApp
-
-
-
-      - name: Login to AWS ECR
-        run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash
-
-      - name: Push backend Docker image to ECR
-        run: docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash/backend:${{ github.sha }}
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: "your-ecr-repo-name"
+          IMAGE_TAG: v1
+          run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
