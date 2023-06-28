@@ -30,9 +30,9 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: "covid-dash"
-          IMAGE_TAG: v1
+          IMAGE_TAG: v1-frontend
         run: |
-          docker build -f frontend -t covid-dash ./react-flask-app
+          docker build -t covid-dash ./react-flask-app
           docker tag covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
           docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
       
