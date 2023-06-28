@@ -32,7 +32,7 @@ jobs:
           ECR_REPOSITORY: "covid-dash"
           IMAGE_TAG: v1
         run: |
-          docker build -t covid-dash -f frontend ./react-flask-app
+          docker build -f frontend -t covid-dash ./react-flask-app
           docker tag covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
           docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
       
