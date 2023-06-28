@@ -32,20 +32,20 @@ jobs:
           ECR_REPOSITORY: "covid-dash"
           IMAGE_TAG: v1
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/frontend:$IMAGE_TAG ./react-flask-app
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY/frontend:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/frontend:$IMAGE_TAG"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./react-flask-app
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       
 
-      - name: Build and push backend Docker image
-        id: build-backend-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: "covid-dash"
-          IMAGE_TAG: v1
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG ./FlaskApp
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG"
+#      - name: Build and push backend Docker image
+#        id: build-backend-image
+#        env:
+#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#          ECR_REPOSITORY: "covid-dash"
+#          IMAGE_TAG: v1
+#        run: |
+#          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG ./FlaskApp
+#          docker push $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG
+#          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG"
       
       
