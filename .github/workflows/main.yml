@@ -26,7 +26,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and push frontend Docker image
-        id: build-image
+        id: build-frontend-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: v1
@@ -37,7 +37,7 @@ jobs:
       
 
       - name: Build and push backend Docker image
-        id: build-image
+        id: build-backend-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: v1
