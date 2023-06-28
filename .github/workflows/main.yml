@@ -32,7 +32,7 @@ jobs:
           ECR_REPOSITORY: "covid-dash"
           IMAGE_TAG: v1
         run: |
-          echo $ECR_REGISTRY
+          echo "Registry: " $ECR_REGISTRY
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./react-flask-app
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
