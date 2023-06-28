@@ -32,10 +32,9 @@ jobs:
           ECR_REPOSITORY: "covid-dash"
           IMAGE_TAG: v1
         run: |
-          echo "Registry: " $ECR_REGISTRY
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./react-flask-app
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build -t covid-dash .
+          docker tag covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
       
 
 #      - name: Build and push backend Docker image
