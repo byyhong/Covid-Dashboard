@@ -33,8 +33,8 @@ jobs:
           IMAGE_TAG: v1-frontend
         run: |
           docker build -t covid-dash ./react-flask-app
-          docker tag covid-dash:IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
-          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
+          docker tag covid-dash:$IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:$IMAGE_TAG
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:$IMAGE_TAG
       
 
       - name: Build and push frontend Docker image
@@ -45,7 +45,7 @@ jobs:
           IMAGE_TAG: v1-backend
         run: |
           docker build -t covid-dash ./FlaskApp
-          docker tag covid-dash:IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
-          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
+          docker tag covid-dash:$IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:$IMAGE_TAG
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:$IMAGE_TAG
       
       
