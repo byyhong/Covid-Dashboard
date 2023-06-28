@@ -29,7 +29,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: "your-ecr-repo-name"
+          ECR_REPOSITORY: "covid-dash"
           IMAGE_TAG: v1
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./react-flask-app
