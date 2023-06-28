@@ -33,19 +33,19 @@ jobs:
           IMAGE_TAG: v1-frontend
         run: |
           docker build -t covid-dash ./react-flask-app
-          docker tag covid-dash:latest 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
-          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:latest
+          docker tag covid-dash:IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
       
 
-#      - name: Build and push backend Docker image
-#        id: build-backend-image
-#        env:
-#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-#          ECR_REPOSITORY: "covid-dash"
-#          IMAGE_TAG: v1
-#        run: |
-#          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG ./FlaskApp
-#          docker push $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG
-#          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG"
+      - name: Build and push frontend Docker image
+        id: build-frontend-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: "covid-dash"
+          IMAGE_TAG: v1-backend
+        run: |
+          docker build -t covid-dash ./react-flask-app
+          docker tag covid-dash:IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
+          docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:IMAGE_TAG
       
       
