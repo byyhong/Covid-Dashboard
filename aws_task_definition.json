@@ -1,27 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:414675159571:task-definition/backend:1",
-    "containerDefinitions": [
-        {
-            "name": "backendContainer",
-            "image": "sha256:162a003dc81b321678abf1b9371c1c323afc8b4d8988060da9577d263e7d8544",
-            "cpu": 0,
-            "portMappings": [
-                {
-                    "name": "backendcontainer-5000-tcp",
-                    "containerPort": 5000,
-                    "hostPort": 5000,
-                    "protocol": "tcp",
-                    "appProtocol": "http"
-                }
-            ],
-            "essential": true,
-            "environment": [],
-            "environmentFiles": [],
-            "mountPoints": [],
-            "volumesFrom": [],
-            "ulimits": []
-        }
-    ],
     "family": "backend",
     "executionRoleArn": "arn:aws:iam::414675159571:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
