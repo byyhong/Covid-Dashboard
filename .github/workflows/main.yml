@@ -47,21 +47,3 @@ jobs:
           docker build -t covid-dash:$IMAGE_TAG ./FlaskApp
           docker tag covid-dash:$IMAGE_TAG 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:$IMAGE_TAG
           docker push 414675159571.dkr.ecr.us-east-2.amazonaws.com/covid-dash:$IMAGE_TAG
-
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
-        with:
-          task-definition: aws_task_definition.json
-          container-name: backendContainer
-          image: ${{ steps.build-image.outputs.image }}
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ secrets.ECS_SERVICE }}
-          cluster: ${{ secrets.ECS_CLUSTER }}
-          wait-for-service-stability: true
-      
-      
