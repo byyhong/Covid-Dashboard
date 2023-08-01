@@ -77,20 +77,12 @@ for i in range(28, 208):
     j += 1
 # # load dataset
 
-#Server path
-# dataset = pd.read_csv("/var/www/FlaskApp/data/Dec17.csv")
-# dataset = pd.read_csv("/var/www/FlaskApp/data/update_data.csv")
-
-#Local path
-print(os.getcwd())
 dataset = pd.read_csv("/data/daily_covid_data.csv")
 
-# df.set_index("test_date", inplace = True)
 dataset.set_index("test_date", inplace=True)
 dataset.loc[dataset['Death Cases']<0,'Death Cases']=0
 values = dataset.values
-# df.set_index("test_date", inplace = True)
-# dataset.set_index("Test Date",inplace = True)
+
 # integer encode direction
 encoder = LabelEncoder()
 values[:, 0] = encoder.fit_transform(values[:, 0])
@@ -122,23 +114,16 @@ n_obs = n_days * n_features
 train_X, train_y = train[:, :n_obs], train[:, -45:]
 test_X, test_y = test[:, :n_obs], test[:, -45:]
 
-# # reshape input to be 3D [samples, timesteps, features]
+# reshape input to be 3D [samples, timesteps, features]
 train_x = train_X.reshape((train_X.shape[0], n_days, n_features))
 test_x = test_X.reshape((test_X.shape[0], n_days, n_features))
-# sys.path.insert(0,'/var/www/FlaskApp/FlaskApp')
 
 app = dash.Dash(__name__)
-#Server path
-# model = load_model('/var/www/FlaskApp/FlaskApp/dec_model.h5')
+# Server path
 model = load_model('../FlaskApp/daily_covid_death_model.h5')
 
-# model = load_model('/var/www/FlaskApp/FlaskApp/non_negative_data_dec_model.h5')
 
-# result = []
-# month_result = []
-# for i in range(45):
-#    month_result.append([])
-
+# Get All Relevant Results
 def get_result(local_reframe, x_days_back):
     result = []
     for i in range(x_days_back, x_days_back + 45):
@@ -155,7 +140,7 @@ def get_result(local_reframe, x_days_back):
             column -= 1
     return result
 
-
+# Get Results 45 days of results
 def get_monthly_result(local_reframe, x_days_back):
     month_result = []
     for i in range(45):
@@ -185,11 +170,12 @@ month_result, result = prediction(reframed_copy, 0)
 
 config = {
     'user': 'byhong',
-    'password': 'hlbj513851',
-    'host': 'covid-dashboard-database.cg1uotwl60q9.us-east-2.rds.amazonaws.com',
+    'password': secrets.DATABASE_PASSWORD,
+    'host': secrets.AWS_DATABASE_HOST,
     'port': 3306,
 }
 
+#Connect to Database
 mydb = mysql.connector.connect(**config)
 my_cursor = mydb.cursor(buffered=True)
 my_cursor.execute("CREATE DATABASE if not exists Covid_Dash")
@@ -205,10 +191,11 @@ year = dataset.iloc[dataset.shape[0] - 1:dataset.shape[0], :].index.tolist()[0][
 month = dataset.iloc[dataset.shape[0] - 1:dataset.shape[0], :].index.tolist()[0][5:7]
 day = dataset.iloc[dataset.shape[0] - 1:dataset.shape[0], :].index.tolist()[0][8:10]
 
+# Add the past 100 days from the current date into a list with a specific format
 max_date = date(int(year), int(month.lstrip('0')), int(day.lstrip('0')))
 x_axis_date = []
 y_axis_death = []
-# y_axis_death_std = []
+
 past_100_x_axis_date = []
 for i in range(100-2, -2,-1):
     curr_date = str(max_date - timedelta(int(i) + 1))
@@ -219,6 +206,7 @@ for i in range(0, 45):
     curr_date_transform = str(int(curr_date[:4])) + "-" + str(int(curr_date[5:7].lstrip('0'))) + '-' + str(int(curr_date[8:].lstrip('0')))
     x_axis_date.append(curr_date_transform)
 
+# Store data in database
 for i in range(len(month_result)):
     for j in range(len(month_result[i])):
         check_if_exist = '''SELECT * FROM Death_Case WHERE date=\'{}\' AND death_cases={}
@@ -238,6 +226,7 @@ my_cursor.close()
 mydb.close()
 app = Flask(__name__)
 CORS(app)
+# Get all prediction data
 @app.route('/prediction', methods = ['GET'])
 def prediction():
     mydb = mysql.connector.connect(**config)
@@ -252,7 +241,7 @@ def prediction():
 
 
 
-
+# Get prediction data based on date
 @app.route('/prediction/<string:date_param>', methods = ['GET'])
 def prediction_by_date(date_param):
     mydb = mysql.connector.connect(**config)
